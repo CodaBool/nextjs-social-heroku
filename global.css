@@ -1,0 +1,83 @@
+/* Fade Animation, used in save icon and password strength bar */
+.fadeIn{
+  opacity: 1;
+  transition: opacity 1s;
+}
+.fadeOut{
+  opacity: 0;
+  transition: opacity 1s;
+}
+.fadeOnLoad {
+  animation: fadein 2s;
+}
+.errorFade {
+  animation: fadein 12s;
+}
+@keyframes fadein {
+  0% { opacity: 0; }
+  80% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.spin {
+  animation: spin 2s linear infinite;
+}
+.spinOnce {
+  animation: spinOnce 2s linear infinite;
+  animation-iteration-count: 1
+}
+@keyframes spinOnce {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(359deg);}
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to {  transform: rotate(359deg); }
+}
+/* Navigation Bar Bootstrap */
+.navbar, .navbar-brand {
+  font-size: 1.5em !important;
+  cursor: pointer;
+}
+/* Posts */
+.Post {
+  margin: 20px;
+  width: 400px;
+  height: 100%;
+  box-shadow: 0 2px 3px #ccc;
+  cursor: pointer;
+}
+.Post:hover, .Post:active {
+  background-color: #C0DDF5;
+}
+/* Form */
+.form-label {
+  font-size: 1.3em;
+  margin: 30px 0 12px 0;
+}
+/* Form error messages */
+.errMsg {
+  margin: 3px 0 3px 0;
+  color: #b41724;
+}
+.errMsg::before  {
+  display: inline;
+  content: "⚠ ";
+}
+/* Comment */
+.comment {
+  border: 1px solid green;
+}
+/*override Bootstrap Accordian Style */
+.card-header {
+  font-weight: 500;
+  font-size: 1.4em;
+  cursor: pointer;
+  background: linear-gradient(-45deg, #2a85d450, #527da350, #0d11ee50, #2fe0e050);
+	background-size: 400% 400%;
+  animation: gradient 20s ease infinite;
+}
+@keyframes gradient {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
