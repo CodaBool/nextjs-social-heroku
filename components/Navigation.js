@@ -3,8 +3,10 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/client'
 
 export default function Navigation() {
+  const [session, loading] = useSession()
   const router = useRouter()
 
   return (
@@ -22,12 +24,16 @@ export default function Navigation() {
           <Link href="/account">
             <div className={`${router.asPath.includes('/account') && 'active'} nav-link`}>Account</div>
           </Link>
-          <Link href="/login">
-            <div className={`${router.asPath.includes('/login') && 'active'} nav-link`}>Login</div>
-          </Link>
-          <Link href="/logout">
-            <div className={`${router.asPath.includes('/logout') && 'active'} nav-link`}>Logout</div>
-          </Link>
+          {session
+            ?
+            <Link href="/logout">
+              <div className={`${router.asPath.includes('/logout') && 'active'} nav-link`}>Logout</div>
+            </Link>
+            : 
+            <Link href="/login">
+              <div className={`${router.asPath.includes('/login') && 'active'} nav-link`}>Login</div>
+            </Link>
+          }
         </Nav>
       </Navbar.Collapse>
     </Navbar>

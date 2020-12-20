@@ -1,3 +1,15 @@
+.signupText {
+  color: rgb(2, 117, 216);
+  margin: 0 auto 0 auto;
+  width: 250px;
+  cursor: pointer;
+  transition: font-size 0.2s, text-shadow 1s;
+}
+.signupText:hover {
+  color: rgb(10, 98, 175);
+  font-size: 1.02em;
+  text-shadow: 0 0 30px rgba(122, 165, 190, 0.3);
+}
 /* Fade Animation, used in save icon and password strength bar */
 .fadeIn{
   opacity: 1;

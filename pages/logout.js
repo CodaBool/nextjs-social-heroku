@@ -1,18 +1,12 @@
-/* This may be better suited to be a modal which the user can interact with on any page */
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
+import { signOut , useSession } from 'next-auth/client'
+import { Load, isLoad } from '../components/Load'
 
 export default function Logout() {
-  const context = useContext(Context)
-  const [,, removeCookie] = useCookies(['simpleAuth']);
-  const history = useHistory()
+  const [session, loading] = useSession()
 
-
-  function signout() {
-    removeCookie('simpleAuth')
-    context.setAuth(false)
-    history.push(`/login`)
-  }
+  if (isLoad(session, loading, true)) return <Load />
 
   return (
     <>
@@ -21,11 +15,13 @@ export default function Logout() {
       </h4>
       <Row>
         <Button 
-          className="mx-auto" 
-          style={{width: "20%"}} 
-          variant="warning" 
+          className="mx-auto"
+          style={{width: "20%"}}
+          variant="warning"
           type="submit"
-          onClick={signout}
+          onClick={() => {
+            signOut({ callbackUrl: '/' })
+          }}
         >
           Logout
         </Button>

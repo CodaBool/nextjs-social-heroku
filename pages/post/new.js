@@ -16,7 +16,6 @@ export default function NewPost() {
   const [show, setShow] = useState(false)
 
   const onSubmit = (data) => {
-    console.log('form data', data)
     setShow(true)
     // const formData = new FormData();
     // formData.append('imagePost', data.postImage[0])

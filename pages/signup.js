@@ -14,12 +14,9 @@ import axios from "axios"
 import ReCAPTCHA from "react-google-recaptcha"
 
 export default function Signup() {
-  const context = useContext(Context)
-  const [, setCookie] = useCookies(['simpleAuth']);
   const [password, setPassword] = useState(false)
   const captcha = useRef(null)
   const { handleSubmit, watch, errors, control, getValues } = useForm()
-  const history = useHistory()
 
   const onSubmit = (data) => {
     // place submission to database here
