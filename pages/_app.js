@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Container from 'react-bootstrap/Container'
 import { Provider } from 'next-auth/client'
 import Navigation from '../components/Navigation'
+import NavBox from '../components/NavBox'
 // import Footer from '../components/Footer'
 
 // reduces flicker https://github.com/rnosov/react-reveal#server-side-rendering
@@ -11,7 +12,6 @@ import Navigation from '../components/Navigation'
 // config({ ssrFadeout: true })
 
 export default function MyApp({ Component, pageProps }) {
-
   return (
     <Provider session={pageProps.session}>
       <Head>
@@ -25,6 +25,7 @@ export default function MyApp({ Component, pageProps }) {
       <main>
         <Container>
           <Component {...pageProps} />
+          <NavBox />
         </Container>
       </main>
       {/* <Footer /> */}
