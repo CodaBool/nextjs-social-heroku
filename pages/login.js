@@ -77,7 +77,7 @@ export default function Login() {
       
 
     <div className="float-left mr-15" style={{width: "500px", margin: "0 auto 0 auto"}}>
-      {/* <Image src={HeaderImage} width="500" fluid /> */}
+      <img src="/image/login-header.jpg" width="500" fluid />
       <h1 className="mt-3">Building Tools For Law Enforcement</h1>
       <h3>Communication Is Key</h3>
       <p className="mx-auto" style={{ maxWidth: "700px" }}>
