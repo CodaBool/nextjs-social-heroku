@@ -15,20 +15,22 @@ export default function Navigation() {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="ml-auto">
-          <Link href="/post/new">
-            <div className={`${router.asPath.includes('/post/') && 'active'} nav-link`}>Create</div>
-          </Link>
           <Link href="/post">
             <div className={`${router.asPath === '/post' && 'active'} nav-link`}>Browse</div>
           </Link>
-          <Link href="/account">
-            <div className={`${router.asPath.includes('/account') && 'active'} nav-link`}>Account</div>
-          </Link>
           {session
             ?
-            <Link href="/logout">
-              <div className={`${router.asPath.includes('/logout') && 'active'} nav-link`}>Logout</div>
-            </Link>
+            <>
+              <Link href="/post/new">
+                <div className={`${router.asPath.includes('/post/') && 'active'} nav-link`}>Create</div>
+              </Link>
+              <Link href="/account">
+                <div className={`${router.asPath.includes('/account') && 'active'} nav-link`}>Account</div>
+              </Link>
+              <Link href="/logout">
+                <div className={`${router.asPath.includes('/logout') && 'active'} nav-link`}>Logout</div>
+              </Link>
+            </>
             : 
             <Link href="/login">
               <div className={`${router.asPath.includes('/login') && 'active'} nav-link`}>Login</div>
