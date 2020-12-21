@@ -16,13 +16,13 @@ export default function Navigation() {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="ml-auto">
           <Link href="/post">
-            <div className={`${router.asPath === '/post' && 'active'} nav-link`}>Browse</div>
+            <div className={`${(router.asPath.includes('/post') && router.asPath !== '/post/new') && 'active'} nav-link`}>Browse</div>
           </Link>
           {session
             ?
             <>
               <Link href="/post/new">
-                <div className={`${router.asPath.includes('/post/') && 'active'} nav-link`}>Create</div>
+                <div className={`${router.asPath === '/post/new' && 'active'} nav-link`}>Create</div>
               </Link>
               <Link href="/account">
                 <div className={`${router.asPath.includes('/account') && 'active'} nav-link`}>Account</div>

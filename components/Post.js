@@ -2,37 +2,31 @@ import React, { useState, useEffect } from 'react'
 import Card from "react-bootstrap/Card"
 import axios from 'axios'
 import { format } from 'timeago.js'
+import { useRouter } from 'next/router'
 
-// use Bootstrap Cards for this component
-export default function Post(props) {
-  const [comments, setComments] = useState([])
-  useEffect(() => {
-    axios.get(`/api/comment/${props.id}`)
-      .then(res => {
-        setComments(res.data)
-      })
-      .catch((err) => {
-        console.log("error", err)
-      })
-  }, [props.id])
-
-  function commentClick(e) {
-    e.stopPropagation()
-    history.push({
-      pathname: '/post', 
-      hash: '#comments',
-      state: { id: props.id }
-    })
-  }
+export default function Post({ title, body, created, updated, image, id, user }) {
+  // const [comments, setComments] = useState([])
+  // useEffect(() => {
+  //   axios.get(`/api/comment/${props.id}`)
+  //     .then(res => {
+  //       setComments(res.data)
+  //     })
+  //     .catch((err) => {
+  //       console.log("error", err)
+  //     })
+  // }, [props.id])
+  
+  const router = useRouter()
 
   return (
-    <Card className="Post" onClick={props.clickPost}>
+    <Card className="Post" onClick={() => router.push(`/post/${id}`)}>
       <Card.Body>
-        <Card.Img className="mb-3" src={props.image}></Card.Img>
-        <Card.Title>{props.title}</Card.Title>
-        <Card.Text>{props.body}</Card.Text>
-        <Card.Link onClick={commentClick}>{<p>Comments: {comments.length}</p>}</Card.Link>
-        <small className="mb-2 text-muted">Last Updated: {format(props.updated)} || Create by: {props.userId}</small>
+        {/* <Card.Img className="mb-3" src={image}></Card.Img> */}
+        <Card.Title>{title}</Card.Title>
+        <Card.Text>{body}</Card.Text>
+        <Card.Text>Created: {created}</Card.Text>
+        {/* <Card.Link onClick={commentClick}>{<p>Comments: {comments.length}</p>}</Card.Link> */}
+        <small className="mb-2 text-muted">Last Updated: {format(updated)} || Create by: {user}</small>
       </Card.Body>
     </Card>
   );
