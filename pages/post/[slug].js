@@ -5,7 +5,6 @@ import { format } from 'timeago.js'
 
 // use Bootstrap Cards for this component
 export default function Post(props) {
-  const history = useHistory()
   const [comments, setComments] = useState([])
   useEffect(() => {
     axios.get(`/api/comment/${props.id}`)
@@ -39,6 +38,47 @@ export default function Post(props) {
   );
 }
 
+export async function getStaticProps(context) {
+  let products = []
+  let totalPages = 1
+  let { slug } = context.params
+
+  const all = await stripe.products.list({limit: 100, active: true}) // starting_after: pagination, uses id
+  if (all) {
+    totalPages = Math.ceil(all.data.length / PRODUCTS_PER_PAGE) || 1
+    
+    // Splits products into small arrays of the max page size
+    let i = 0, j, tempArr, chunk = PRODUCTS_PER_PAGE, splitArr = []
+    for (i = 0 , j = all.data.length; i < j; i += chunk) {
+      tempArr = all.data.slice(i, i + chunk)
+      splitArr.push(tempArr)
+    }
+    products = splitArr[slug - 1]
+
+  } else {
+    console.log('could not find products')
+  }
+  return { props: {products, totalPages, slug } }
+}
+
+export async function getStaticPaths() {
+  let paths = []
+  if (stripe) {
+    const products = await stripe.products.list({limit: 100, active: true}) // starting_after: pagination, uses id
+    if (products) {
+      const pages = Math.ceil(products.data.length / PRODUCTS_PER_PAGE) || 1
+      paths = makeArr(pages).map(page => ({
+        params: { slug: page },
+      }))
+    } else {
+      console.log('no products found')
+    }
+  } else {
+    console.log('could not make instantiate stripe')
+  }
+  console.log('browse/[slug] paths', paths)
+  return { paths, fallback: false } // { fallback: false } means other routes should 404.
+}
 
 // singlePost
 // import React, { useEffect, useState, useRef, useCallback } from 'react'
