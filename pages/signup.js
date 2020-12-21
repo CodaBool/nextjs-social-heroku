@@ -1,59 +1,64 @@
 /* React Form Hook, provides the best control
 for forms. There is a way to get server side error messages
 e.g. 'This email is already in use' */
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import { Map, PersonBadge, Envelope, Person, GeoAlt, Key } from 'react-bootstrap-icons'
-//import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import axios from "axios"
 import ReCAPTCHA from "react-google-recaptcha"
+import Toast from '../components/Toast'
+import { signIn, useSession } from 'next-auth/client'
+import { Load, isLoad } from '../components/Load'
 
 export default function Signup() {
   const [password, setPassword] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [show, setShow] = useState(false)
   const captcha = useRef(null)
+  const [session, loading] = useSession()
   const { handleSubmit, watch, errors, control, getValues } = useForm()
 
   const onSubmit = (data) => {
-    // place submission to database here
-    // TODO: check if email is in use already and report error before submit
-    console.log("Data:", data)
-    // bcrypt.hash(data.password, 10, function(err, hash) {
-    //   alert(`Signup Request!\n\nName: ${data.firstName} ${data.lastName}\nBadge: ${data.badge}\nPrecinct: ${data.precinct}\nZip: ${data.zip}\nEmail: ${data.email}\nPassword (hashed): ${hash}`)
-    // })
-
-    // Map frontend fields to backend fieldnames
-    const { firstName, lastName, zip, password, email, badgeNumber, precinctNumber} = data;
-    data = { firstName, lastName, email, badgeNumber, precinctNumber, zip, password, admin: false, token: captcha.current.getValue() }
-
     const token = captcha.current.getValue()
+    // if (true) { // TODO: reset this 
     if (token !== "") {
-      console.log(data)
-      axios.post("/api/user", data)
-        .then((res) => {
-          // alert(`Signup Successful!\n\nEmail: ${data.email}\nPassword: ${data.password}\nID: ${res.data.user.id}\nToken: ${res.data.token}`)
-          setCookie('simpleAuth', true, { path: '/', sameSite: 'strict' })
-          context.setAuth(true)
+      bcrypt.hash(data.password, 10, function(err, hash) {
+        axios.post('/api/rest/postUser', {
+          email: data.email,
+          name: data.firstName + ' ' + data.lastName,
+          token: token,
+          password: hash,
+          joined: new Date(),
+          updated: new Date()
         })
-        .then((res) => {          
-          history.push(`/posts`)
-        })
-        .catch((err) => {
-          //TODO handle expected error codes from backend
-          // 400 = User already exists
-          // 500 = Unable to save user
-          alert(`Signup Failure\nError Code: ${err.response.status}`)
-        });
+          .then(res => {
+            setSuccess(true)
+            signIn('credentials', { email: data.email, password: data.password, callbackUrl: '' })
+          })
+          .catch(err => {
+            if (err.response.data === 'Duplicate Stripe Email' || err.response.data === 'Cannot Create PG User') {
+              setShow(true)
+            } else {
+              console.log(err.response.data)
+            }
+          })
+          .finally(
+            captcha.current.reset()
+          )
+      })
     }
   }
-
   useEffect(() => {
     setPassword(watch('password'))
   }, [watch])
+
+  if (isLoad(session, loading) || success) return <Load />
 
   // console.log("Errors", errors)
 
@@ -175,12 +180,17 @@ export default function Signup() {
         <Row >
           <ReCAPTCHA
             className="mx-auto mt-3"
-            sitekey="6LcUZt4ZAAAAAKsu3QqginzUrcKS_9brtBKGBQcL"
+            sitekey="6LfYhw0aAAAAANDCPhmW-uWwN6shEUvs31Jof6TT"
             ref={captcha}
           />
           <Button className="mx-auto my-5" style={{width: "40%"}} variant="primary" type="submit">Create Account</Button>
         </Row>
       </Form>
+      <div style={{position: 'fixed', top: '120px', right: '20px'}}>
+        <Toast show={show} setShow={setShow} title='Email Taken' error body={
+          <h5 className="text-danger" >An account already exists with the Email Address</h5>
+        }/>
+      </div>
     </>
   )
 }

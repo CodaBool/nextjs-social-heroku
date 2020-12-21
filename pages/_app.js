@@ -13,9 +13,9 @@ import Navigation from '../components/Navigation'
 export default function MyApp({ Component, pageProps }) {
 
   return (
-    <>
+    <Provider session={pageProps.session}>
       <Head>
-        <title>CodaBool Social</title>
+        <title>Trafficking Spotters</title>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="icon" type="image" sizes="32x32" href="/icons/favicon-32x32.gif" />
@@ -23,13 +23,11 @@ export default function MyApp({ Component, pageProps }) {
       </Head>
       <Navigation />
       <main>
-      <Provider session={pageProps.session}>
         <Container>
           <Component {...pageProps} />
         </Container>
-      </Provider>
       </main>
       {/* <Footer /> */}
-    </>
+    </Provider>
   )
 }

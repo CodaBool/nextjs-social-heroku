@@ -2,81 +2,59 @@ import React, { useState, useEffect } from 'react'
 import Card from "react-bootstrap/Card"
 import axios from 'axios'
 import { format } from 'timeago.js'
+import data from '../../constants/data.json'
 
 // use Bootstrap Cards for this component
-export default function Post(props) {
-  const [comments, setComments] = useState([])
-  useEffect(() => {
-    axios.get(`/api/comment/${props.id}`)
-      .then(res => {
-        setComments(res.data)
-      })
-      .catch((err) => {
-        console.log("error", err)
-      })
-  }, [props.id])
+export default function Post({ post }) {
+  // const [comments, setComments] = useState([])
+  // useEffect(() => {
+  //   axios.get(`/api/comment/${props.id}`)
+  //     .then(res => {
+  //       setComments(res.data)
+  //     })
+  //     .catch((err) => {
+  //       console.log("error", err)
+  //     })
+  // }, [props.id])
 
-  function commentClick(e) {
-    e.stopPropagation()
-    history.push({
-      pathname: '/post', 
-      hash: '#comments',
-      state: { id: props.id }
-    })
-  }
+  // function commentClick(e) {
+  //   e.stopPropagation()
+  //   history.push({
+  //     pathname: '/post', 
+  //     hash: '#comments',
+  //     state: { id: props.id }
+  //   })
+  // }
 
   return (
-    <Card className="Post" onClick={props.clickPost}>
+    <Card className="">
       <Card.Body>
-        <Card.Img className="mb-3" src={props.image}></Card.Img>
-        <Card.Title>{props.title}</Card.Title>
-        <Card.Text>{props.body}</Card.Text>
-        <Card.Link onClick={commentClick}>{<p>Comments: {comments.length}</p>}</Card.Link>
-        <small className="mb-2 text-muted">Last Updated: {format(props.updated)} || Create by: {props.userId}</small>
+        {/* <Card.Img className="mb-3" src={post.image}></Card.Img> */}
+        <Card.Title>{post.title}</Card.Title>
+        <Card.Text>{post.body}</Card.Text>
+        <Card.Text>{format(post.createdAt)}</Card.Text>
+        {/* <Card.Link onClick={commentClick}>{<p>Comments: {comments.length}</p>}</Card.Link> */}
+        <small className="mb-2 text-muted">Last Updated: {format(post.updatedAt)} || Create by: {post.user}</small>
       </Card.Body>
     </Card>
-  );
+  )
 }
 
 export async function getStaticProps(context) {
-  let products = []
-  let totalPages = 1
-  let { slug } = context.params
-
-  const all = await stripe.products.list({limit: 100, active: true}) // starting_after: pagination, uses id
-  if (all) {
-    totalPages = Math.ceil(all.data.length / PRODUCTS_PER_PAGE) || 1
-    
-    // Splits products into small arrays of the max page size
-    let i = 0, j, tempArr, chunk = PRODUCTS_PER_PAGE, splitArr = []
-    for (i = 0 , j = all.data.length; i < j; i += chunk) {
-      tempArr = all.data.slice(i, i + chunk)
-      splitArr.push(tempArr)
-    }
-    products = splitArr[slug - 1]
-
-  } else {
-    console.log('could not find products')
-  }
-  return { props: {products, totalPages, slug } }
+  const { slug } = context.params 
+  return { props: { post: data[slug - 1] } }
 }
 
 export async function getStaticPaths() {
+  let arr = []
   let paths = []
-  if (stripe) {
-    const products = await stripe.products.list({limit: 100, active: true}) // starting_after: pagination, uses id
-    if (products) {
-      const pages = Math.ceil(products.data.length / PRODUCTS_PER_PAGE) || 1
-      paths = makeArr(pages).map(page => ({
-        params: { slug: page },
-      }))
-    } else {
-      console.log('no products found')
-    }
-  } else {
-    console.log('could not make instantiate stripe')
+  for (let i = 1; i < data.length + 1; i++){
+    arr.push(String(i))
   }
-  console.log('browse/[slug] paths', paths)
+  paths = arr.map(page => ({
+    params: { slug: page },
+  }))
+  console.log('post/[slug] paths', paths)
   return { paths, fallback: false } // { fallback: false } means other routes should 404.
 }
 

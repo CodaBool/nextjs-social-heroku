@@ -1,0 +1,20 @@
+[
+  {
+    "title": "post1",
+    "image": "http://some.com",
+    "body": "placeholder",
+    "user": "some@user.com",
+    "id": "1",
+    "createdAt": "2020-08-06 22:22:00",
+    "updatedAt": "2020-08-06 22:22:00"
+  },
+  {
+    "title": "post2",
+    "image": "http://some2.com",
+    "body": "placeholder 2",
+    "user": "some@user.com",
+    "id": "2",
+    "createdAt": "2020-09-06 22:22:00",
+    "updatedAt": "2020-09-06 22:22:00"
+  }
+]

@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 import { compare } from 'bcryptjs'
-// import { getCustomer }from '../../../lib/helper'
+import { getUser }from '../../../lib/helper'
 
 export const config = { // nextjs doc for custom config https://nextjs.org/docs/api-routes/api-middlewares#custom-config
   api: { // was getting warning that API resolved without sending a response for /api/auth/session, this may result in stalled requests.
@@ -26,46 +26,24 @@ export default (req, res) => {
   
         // can use throw new Error('message') to send to err.message catch block 
         authorize: async (clientData) => {
-          console.log('checking session')
           try {
-            const customer = await getCustomer(null, clientData.email, false)
-            if (customer) {
-              const validPassword = await compare(clientData.password, customer.metadata.password)
-              if (validPassword) {
-                return { id: customer.id, name: customer.name, email: customer.email } // complete successful login
-              } else { // invalid password
-                return Promise.reject('/login?error=invalid')
-              }
-            } else { // no account
+            const user = await getUser(clientData.email, false)
+            console.log('compare', user.password, 'vs', clientData.password)
+            const validPassword = await compare(clientData.password, user.password)
+            if (validPassword) {
+              console.log('got valid password sending back user obj for successful signin')
+              return { id: user.id, name: user.name, email: user.email } // complete successful login
+            } else { // invalid password
+              console.log('got invalid password')
               return Promise.reject('/login?error=invalid')
             }
           } catch (err) {
-            console.log(err)
+            console.log('try failed with err', err)
             return Promise.reject('/login?error=invalid')
           }
         },
       })
     ],
-    callbacks: {
-      session: async (session, user, sessionToken) => { // ran on every useSession
-        if (!user.id) { // may be unecessary, not sure if this runs ever
-          console.log('go to TODO(1): if you see this message')
-          const customer = await getCustomer(null, user.email, true)
-          if (customer) {
-            if (customer.email === user.email) {
-              session.id = customer.id // Add property to session
-            }
-          }
-        }
-        return Promise.resolve(session)
-      },
-      jwt: async (token, user, account, profile, isNewUser) => {
-        if (user) {
-          token.id = user.id
-        }
-        return Promise.resolve(token)
-      }
-    },
     pages: {
       signIn: '/login',
       signOut: '/logout',
