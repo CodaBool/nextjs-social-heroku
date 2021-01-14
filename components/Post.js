@@ -18,8 +18,13 @@ export default function Post({ title, body, created, updated, image, id, user })
   
   const router = useRouter()
 
+  function handleClick() {
+    window.scrollTo(0,0)
+    router.push(`/post/${id}`)
+  }
+
   return (
-    <Card className="Post" onClick={() => router.push(`/post/${id}`)}>
+    <Card className="Post" onClick={handleClick}>
       <Card.Img variant="top" src={image} />
       <Card.Body>
         {/* <Card.Img className="mb-3" src={image}></Card.Img> */}

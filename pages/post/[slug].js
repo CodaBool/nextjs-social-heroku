@@ -51,13 +51,13 @@ export default function Post({ post }) {
         </Col>
       </Row>
       <Row>
-        <Col className="p-3">
-          <h4>&emsp;{post.body}</h4>
+        <Col className="p-5">
+          <p>&emsp;{post.body}</p>
         </Col>
       </Row>
       <Row>
         <Col className="p-5">
-          <h2 className="text-muted text-center">&emsp;Comments Here</h2>
+          <h3 className="text-muted text-center">&emsp;Comments Here</h3>
         </Col>
       </Row>
     </>
