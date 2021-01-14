@@ -15,14 +15,16 @@ import ReCAPTCHA from "react-google-recaptcha"
 import Toast from '../components/Toast'
 import { signIn, useSession } from 'next-auth/client'
 import { Load, isLoad } from '../components/Load'
+import { useRouter } from 'next/router'
 
 export default function Signup() {
-  const [password, setPassword] = useState(false)
+  const [password, setPassword] = useState('')
   const [success, setSuccess] = useState(false)
   const [show, setShow] = useState(false)
   const captcha = useRef(null)
   const [session, loading] = useSession()
   const { handleSubmit, watch, errors, control, getValues } = useForm()
+  const router = useRouter()
 
   const onSubmit = (data) => {
     const token = captcha.current.getValue()
@@ -59,6 +61,10 @@ export default function Signup() {
   }, [watch])
 
   if (isLoad(session, loading) || success) return <Load />
+
+  if (session) {
+    router.push('/post')
+  }
 
   // console.log("Errors", errors)
 
@@ -157,7 +163,7 @@ export default function Signup() {
           />
           {errors.password && <p className="errMsg">Your password must be at least 8 characters</p>}
         </Form.Group>
-        <PasswordStrengthBar password={password} className={`${password.length === 0 ? 'fadeOut' : 'fadeIn'}`}/>
+        {password && <PasswordStrengthBar password={password} className={`${password.length === 0 ? 'fadeOut' : 'fadeIn'}`}/>}
         <Form.Group>
           <Key className="mr-3 mb-1" size={30}/>
           <Form.Label>Confirm Password</Form.Label>

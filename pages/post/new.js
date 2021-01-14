@@ -60,7 +60,7 @@ export default function NewPost() {
       </Modal >
 
       {/* Form */}
-      <h1 className="display-6 mb-2">Create New Post</h1>
+      <h1 className="display-4 my-4">Create New Post</h1>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Accordion defaultActiveKey="0" className="wave">
           <Card>

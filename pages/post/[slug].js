@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import Card from "react-bootstrap/Card"
+import Card from 'react-bootstrap/Card'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 import { format } from 'timeago.js'
 import data from '../../constants/data.json'
+import { ArrowLeft } from 'react-bootstrap-icons'
+import { useRouter } from 'next/router'
 
 // use Bootstrap Cards for this component
 export default function Post({ post }) {
+  const router = useRouter()
   // const [comments, setComments] = useState([])
   // useEffect(() => {
   //   axios.get(`/api/comment/${props.id}`)
@@ -27,16 +33,34 @@ export default function Post({ post }) {
   // }
 
   return (
-    <Card className="">
-      <Card.Body>
-        {/* <Card.Img className="mb-3" src={post.image}></Card.Img> */}
-        <Card.Title>{post.title}</Card.Title>
-        <Card.Text>{post.body}</Card.Text>
-        <Card.Text>{format(post.createdAt)}</Card.Text>
-        {/* <Card.Link onClick={commentClick}>{<p>Comments: {comments.length}</p>}</Card.Link> */}
-        <small className="mb-2 text-muted">Last Updated: {format(post.updatedAt)} || Create by: {post.user}</small>
-      </Card.Body>
-    </Card>
+    <>
+      <Button className="my-2" variant="outline-secondary" onClick={() => router.push('/post')}>
+        <ArrowLeft className="mb-1 mr-3" size={22} />
+        <p className="d-inline ">Back</p>
+      </Button>
+      <Row className="">
+        <Col className="p-3" md={4}>
+          <div className="d-flex">
+            <img src={post.image} className="rounded-circle mx-auto" />
+          </div>
+        </Col>
+        <Col className="p-3" md={8}>
+          <h2 className="display-4">{post.title}</h2>
+          <p className="text-muted">{format(post.createdAt)}</p>
+          <p className="text-muted">{post.user}</p>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="p-3">
+          <h4>&emsp;{post.body}</h4>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="p-5">
+          <h2 className="text-muted text-center">&emsp;Comments Here</h2>
+        </Col>
+      </Row>
+    </>
   )
 }
 

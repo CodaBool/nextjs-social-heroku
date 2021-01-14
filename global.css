@@ -162,3 +162,10 @@ a {
     background-color: rgba(255, 255, 255, 0.8);
   }
 }
+/* Navigation Bar, overide Bootstrap */
+.nav-link, .navbar-brand {
+  cursor: pointer;
+  font-size: 1.3em !important;
+  line-height: 1 !important;
+  margin: 0 29px 0 29px;
+}

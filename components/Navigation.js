@@ -11,7 +11,7 @@ export default function Navigation() {
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
-      <Navbar.Brand onClick={() => router.push('/post')}>Trafficking Spotters</Navbar.Brand>
+      <Navbar.Brand onClick={() => router.push('/post')}>Spotters</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="ml-auto">
@@ -32,8 +32,8 @@ export default function Navigation() {
               </Link>
             </>
             : 
-            <Link href="/login">
-              <div className={`${router.asPath.includes('/login') && 'active'} nav-link`}>Login</div>
+            <Link href="/">
+              <div className={`${router.asPath === '/' && 'active'} nav-link`}>Login</div>
             </Link>
           }
         </Nav>

@@ -45,10 +45,10 @@ export default (req, res) => {
       })
     ],
     pages: {
-      signIn: '/login',
+      signIn: '/',
       signOut: '/logout',
-      newUser: '/singup',
-      error: '/login', // Error code passed in query string as ?error=
+      newUser: '/signup',
+      error: '/', // Error code passed in query string as ?error=
     },
     session: {
       jwt: true, 

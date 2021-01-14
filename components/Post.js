@@ -20,10 +20,11 @@ export default function Post({ title, body, created, updated, image, id, user })
 
   return (
     <Card className="Post" onClick={() => router.push(`/post/${id}`)}>
+      <Card.Img variant="top" src={image} />
       <Card.Body>
         {/* <Card.Img className="mb-3" src={image}></Card.Img> */}
         <Card.Title>{title}</Card.Title>
-        <Card.Text>{body}</Card.Text>
+        <Card.Text>&emsp;{body.substring(0, 300)}...</Card.Text>
         <Card.Text>Created: {created}</Card.Text>
         {/* <Card.Link onClick={commentClick}>{<p>Comments: {comments.length}</p>}</Card.Link> */}
         <small className="mb-2 text-muted">Last Updated: {format(updated)} || Create by: {user}</small>

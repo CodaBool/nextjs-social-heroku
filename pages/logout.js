@@ -10,7 +10,7 @@ export default function Logout() {
 
   return (
     <>
-      <h4 className="display-5 text-center m-1 mb-5">
+      <h4 className="display-5 text-center my-4 p-5">
         Are you sure you would like to Logout?
       </h4>
       <Row>
