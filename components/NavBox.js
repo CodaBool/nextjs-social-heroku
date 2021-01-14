@@ -53,8 +53,8 @@ export default function NavBox() {
   return (
     <div className="navBox">
       <img src='/image/navBox-home.png' ref={imgHome} id="img-home" />
-      <a href="https://codabool.com/projects" ref={home} className="navBox-btn" id="btn-home" onMouseEnter={() => expand(imgHome)} onMouseLeave={() => contract(imgHome)}>GO HOME</a>
-      <a href="https://github.com/CodaBool/nextjs-social-heroku" ref={code} className="navBox-btn" id="btn-code" onMouseEnter={() => expand(imgCode)} onMouseLeave={() => contract(imgCode)}>SEE CODE</a>
+      <a href="https://codabool.com/projects" ref={home} className="navBox-btn" id="btn-home" onMouseEnter={() => expand(imgHome)} onMouseLeave={() => contract(imgHome)}>HOME</a>
+      <a href="https://github.com/CodaBool/nextjs-social-heroku" ref={code} className="navBox-btn" id="btn-code" onMouseEnter={() => expand(imgCode)} onMouseLeave={() => contract(imgCode)}>CODE</a>
       <img src="/image/navBox-code.png" ref={imgCode} id="img-code" />
     </div>
   )
